@@ -118,14 +118,14 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://joinquant-image.b0.upaiyun.com/74787c100b599ad026e9c96265cbc3cb">
 <meta property="og:image" content="https://deeplearning4j.org/img/simple_RL_schema.png">
-<meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/MDP.jpg">
+<meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/mdp.jpg">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/partial.png">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/result.png">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/action_hedge.png">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/action_single.png">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/PG.png">
 <meta property="og:image" content="https://kernelbooster.com/2018/07/06/基于强化学习构建数字货币量化交易策略/RPG.png">
-<meta property="og:updated_time" content="2018-07-06T10:24:36.798Z">
+<meta property="og:updated_time" content="2018-07-06T10:38:10.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于强化学习构建数字货币量化交易策略">
 <meta name="twitter:description" content="Prelude距离上一次长篇大论的写文章已经过去至少2年了，长时间处于较为封闭的环境导致大脑的语言模型 (Language Model) 出现严重退化，思维都以 (Hidden State) 的形式存在着，但是表达不出来，这让我十分苦恼。因此遂决定创建此博客用于记录一些学习和生活中有意义的事情，同时也为了训练自己的表达和写作能力。   经过一番苦思冥想，实在不知道应该写一篇什么博文作为本博客的开山">
@@ -374,7 +374,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-07-06 18:24:36" itemprop="dateModified" datetime="2018-07-06T18:24:36+08:00">2018-07-06</time>
+                <time title="Modified: 2018-07-06 18:38:10" itemprop="dateModified" datetime="2018-07-06T18:38:10+08:00">2018-07-06</time>
               
             
           </span>
@@ -456,7 +456,7 @@
 <li>当前状态足够用来预计未来</li>
 <li>$P(S_{t+1}|S_{t})=P(S_{t+1}|S_1,..,S_t)$  </li>
 </ul>
-<p>在MDP中，由于加入了行为的影响，那么系统的下一个状态将由当前状态和行为共同决定：$P(S_{t+1}|S_{t},A_{t})$，用一张图来表示更为清晰：<br><img src="MDP.jpg" alt="MDP">  </p>
+<p>在MDP中，由于加入了行为的影响，那么系统的下一个状态将由当前状态和行为共同决定：$P(S_{t+1}|S_{t},A_{t})$，用一张图来表示更为清晰：<br><img src="mdp.jpg" alt="MDP">  </p>
 <p>不知你看完这段介绍有何感想，我是觉得，用它来做量化交易没准可行，但是有几个问题值得讨论：</p>
 <ol>
 <li>市场（环境）的状态不是完整可知的，因此交易问题应该属于POMDP(Partially Observed MDP)？Agent需要通过观察来推测自己所在的状态？</li>
@@ -771,8 +771,6 @@
 
 
 
-  
-
 
 
 
@@ -798,11 +796,6 @@
   
   
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
   
 
 
