@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>基于强化学习构建数字货币量化交易策略 | NULL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Prelude距离上一次长篇大论的写文章已经过去至少2年了，长时间处于较为封闭的环境导致大脑的语言模型 (Language Model) 出现严重退化，思维都以 (Hidden State) 的形式存在着，但是表达不出来，这让我十分苦恼。因此遂决定创建此博客用于记录一些学习和生活中有意义的事情，同时也为了训练自己的表达和写作能力。   经过一番苦思冥想，实在不知道应该写一篇什么博文作为本博客的开山">
+<meta name="keywords" content="Quantitative Trading,Reinforcement Learning,Deep Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于强化学习构建数字货币量化交易策略">
+<meta property="og:url" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/index.html">
+<meta property="og:site_name" content="NULL">
+<meta property="og:description" content="Prelude距离上一次长篇大论的写文章已经过去至少2年了，长时间处于较为封闭的环境导致大脑的语言模型 (Language Model) 出现严重退化，思维都以 (Hidden State) 的形式存在着，但是表达不出来，这让我十分苦恼。因此遂决定创建此博客用于记录一些学习和生活中有意义的事情，同时也为了训练自己的表达和写作能力。   经过一番苦思冥想，实在不知道应该写一篇什么博文作为本博客的开山">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://joinquant-image.b0.upaiyun.com/74787c100b599ad026e9c96265cbc3cb">
+<meta property="og:image" content="https://deeplearning4j.org/img/simple_RL_schema.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/MDP.jpg">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/result.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/action_hedge.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/action_single.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/PG.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/RPG.png">
+<meta property="og:updated_time" content="2018-07-06T08:57:58.247Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于强化学习构建数字货币量化交易策略">
+<meta name="twitter:description" content="Prelude距离上一次长篇大论的写文章已经过去至少2年了，长时间处于较为封闭的环境导致大脑的语言模型 (Language Model) 出现严重退化，思维都以 (Hidden State) 的形式存在着，但是表达不出来，这让我十分苦恼。因此遂决定创建此博客用于记录一些学习和生活中有意义的事情，同时也为了训练自己的表达和写作能力。   经过一番苦思冥想，实在不知道应该写一篇什么博文作为本博客的开山">
+<meta name="twitter:image" content="https://joinquant-image.b0.upaiyun.com/74787c100b599ad026e9c96265cbc3cb">
+  
+    <link rel="alternate" href="/atom.xml" title="NULL" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">NULL</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuriak.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-基于强化学习构建数字货币量化交易策略" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/06/基于强化学习构建数字货币量化交易策略/" class="article-date">
+  <time datetime="2018-07-05T14:23:54.000Z" itemprop="datePublished">2018-07-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Quant/">Quant</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于强化学习构建数字货币量化交易策略
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Prelude"><a href="#Prelude" class="headerlink" title="Prelude"></a>Prelude</h2><p>距离上一次长篇大论的写文章已经过去至少2年了，长时间处于较为封闭的环境导致大脑的语言模型 (Language Model) 出现严重退化，思维都以 (Hidden State) 的形式存在着，但是表达不出来，这让我十分苦恼。因此遂决定创建此博客用于记录一些学习和生活中有意义的事情，同时也为了训练自己的表达和写作能力。  </p>
+<p>经过一番苦思冥想，实在不知道应该写一篇什么博文作为本博客的开山之作，所以干脆也就省了那些形式主义，直接写一篇最近的研究进展吧。 本来想直接上英文，但是由于英语水平的限制，第一篇文章还是用母语写吧，读者和作者都省心点。  </p>
+<p>经过最近1个月的研究与学习，大概对强化学习有了一些初步的认识。将强化学习应用于量化交易一直是我的一个非常感兴趣的研究方向，同时也是我毕业论文中将要涵盖内容。那么，为何要使用强化学习做量化交易，以及能否使用强化学习做量化交易，将是我在本文中重点讨论的内容。文章的最后我会放出一些实验代码，以便有兴趣的读者进行参考。</p>
+<a id="more"></a>
+<h2 id="什么是量化交易"><a href="#什么是量化交易" class="headerlink" title="什么是量化交易"></a>什么是量化交易</h2><p>引用<a href="http://wiki.mbalib.com/wiki/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93" target="_blank" rel="noopener">MBA智库百科</a>的解释</p>
+<blockquote>
+<p>量化交易是指借助现代统计学和数学的方法，利用计算机技术来进行交易的证券投资方式。量化交易从庞大的历史数据中海选能带来超额收益的多种“大概率”事件以制定策略，用数量模型验证及固化这些规律和策略，然后严格执行已固化的策略来指导投资，以求获得可以持续的、稳定且高于平均收益的超额回报。</p>
+</blockquote>
+<p>这段解释看似简单，但是编写一个真正有效的交易策略还是相当复杂的。这里我引用聚宽的一张图：<br><img src="https://joinquant-image.b0.upaiyun.com/74787c100b599ad026e9c96265cbc3cb" alt="策略"></p>
+<p>从图中可以看出，一个有效的策略需要使用富有多样性的数据来源，策略本身也并不是一个模型就可以搞定的。在量化交易中，选股和择时策略的编写一般会大量用到数学模型。例如在选股策略中的多因子模型，通常使用各种数据构造具有预测价值的因子(Factor), 再通过因子构建回归模型预测收益$r$或超额收益$\alpha$。 $$r=\alpha+\sum{\beta_k F_k}+\epsilon$$<br>预测结果中具有较高收益的股票就可以被选择作为目标标的买入。那么，挖掘更有效的因子或许意味着能够获得对于收益的更准确的估计。所以，对于一个多因子选股模型，构造有效的因子是一项非常重要的工作。因子一般来源于一切可以获得的数据，OHLCV，财务数据，基本面等。所以选股策略主要用来决定买什么。那么，择时策略就是用来决定何时买的，它的构建通常更多的依赖技术指标。  </p>
+<p>通过上面的一番解释，我们已经大概了解到了什么是量化交易，总结一下，它就是使用数学模型+计算机程序构建的一种自动交易系统。同时我们也了解到，编写一个有效的量化交易策略是十分复杂的，构建图中每一个模块都需要学习许多知识，解决许多问题。作为一个懒得掉渣的程序员，我一直梦想着有一套端到端的解决方案，能实现躺赚= 。=  </p>
+<p>但是到底有没有一种方法能够帮助我们实现躺赚？这种天上掉馅儿饼的事儿当然只是想想就好，但是我们确实可以通过一些技术简化编写量化交易策略的过程。近些年来，深度神经网络的崛起帮助我们解决了不少之前难以想象的问题，以深度学习为代表的各种算法在多种复杂问题上获得了优异的性能。那么能否将深度学习应用于量化交易？如何才能有效的应用？</p>
+<h2 id="Deep-Learning-Quantitative-Trading"><a href="#Deep-Learning-Quantitative-Trading" class="headerlink" title="Deep Learning + Quantitative Trading"></a>Deep Learning + Quantitative Trading</h2><p>关于深度学习的内容我就不在这里展开叙述了，这里主要提出一些问题以及现有的解决方案。<br>近年来有不少论文都在水这个方向，大多数论文都在试图使用深度学习预测股价波动。应用的数据也是多种多样，有的直接使用OHLCV，有的使用新闻，财报，也有使用Order Book的。我之前的研究方向是用NLP处理财务新闻进而预测价格波动，但是效果并不是太好，大多数的论文得到的结果也并不是太好。抽取两篇典型的文章来分析：  </p>
+<ul>
+<li><a href="http://aclweb.org/anthology/N16-1041" target="_blank" rel="noopener">Leverage Financial News to Predict Stock Price Movements Using Word Embeddings and Deep Neural Networks</a></li>
+<li><a href="http://dl.acm.org/citation.cfm?id=2832415.2832572" target="_blank" rel="noopener">Deep Learning for Event-driven Stock Prediction</a>  </li>
+</ul>
+<p>第一篇文章相对来说中规中矩，使用word embedding构建词向量，通过词向量的距离迭代获取对波动有预测意义的近义词，构建bag of keywords，计算PMI。经过一系列处理后，构建的feature用于预测下一交易日的涨跌。论文最终的准确率大概在56%左右的准确率，复现之后的结果也基本相近。 </p>
+<p>第二篇论文使用了event embedding，将一个事件表示为三元组 $E=(Object_1, Predicate , Object_2)$, 然后用word embedding 的均值替换E中的实体。构建好tuple以后，作者使用了Neural Tensor Network将主谓宾的关系嵌入到高维空间，这样，一个事件就能用一个向量表示了。文章中的Neural Tensor Network应该是来源于<a href="https://cs.stanford.edu/~danqi/papers/nips2013.pdf" target="_blank" rel="noopener">Reasoning With Neural Tensor Networks for Knowledge Base Completion</a>。获得了Event向量之后，就可以用于预测价格的变化了。这篇文章仍然是将预测简化为一个分类问题，即预测下一交易日价格的涨跌。文章中使用了CNN来处理长期和中期事件，但是这部分我没有实现，不知是否能够显著提升精确率。文章得出的结果达到了65%的精确率，相对来说算是一个很成功的结果了。  </p>
+<p>除了使用NLP+DL预测价格涨跌以外，直接使用OHLCV进行预测的文章也存在不少，大部分使用RNN或CNN构建自回归模型，效果不做评价。  </p>
+<p>所以，在这里想讨论一下使用DL构建的预测模型来完成选股或择时策略是否可行。首先，我们知道，Deep Learning是很吃数据的，数据量不够的话容易过拟合。那么使用文本来预测或许是有道理的，毕竟大量的文本数据可以填补交易数据不足的问题。但是，对于文本数据的标注实际上我一直持怀疑态度的。一条新闻或一篇财报，对于股价波动到底能够带来多大影响，影响会持续多久，影响的是个股，板块还是整个市场？这个我们通常难以精确衡量，那么单纯用下一日的价格涨跌来标注数据是否真的合理，有待商榷？另外，即便能够训练出相对准确的预测模型，那么如何应用预测结果？仍然需要编写有效的策略。所以个人认为，用DL构建预测模型，很具有研究价值，但是想要真正部署使用还需要许多后续工作。</p>
+<h2 id="Reinforcement-Learning-Quantitative-Trading"><a href="#Reinforcement-Learning-Quantitative-Trading" class="headerlink" title="Reinforcement Learning + Quantitative Trading"></a>Reinforcement Learning + Quantitative Trading</h2><p>在意识到使用凭借个人力量构建DL预测模型并应用在量化交易中是一项极其艰巨的任务后，我将目光转向了强化学习。强化学习近年来凭借深度神经网络的加持又占领了不少城池。这里简单介绍一下什么是强化学习。强化学习是一套符合生物行为规律的用来指导智能体学习的框架。它将智能体的学习行为抽象为一个闭环的过程。在这一过程中，智能体(Agent)通过观察环境(Environment)的状态(State)，做出一个行动(Action)，环境会因为这个行动而改变自己的状态，同时，也会给予智能体一个奖励或惩罚(Reward)。智能体可以通过这样一系列的反馈纠正自己决策过程，从而学习出一套能够获得最多奖励的策略。<br><img src="https://deeplearning4j.org/img/simple_RL_schema.png" alt="RL"></p>
+<p>那么，既然提到了强化学习，就不得不提马尔可夫决策过程(Markov Decision Process, MDP)。首先，需要说明，MDP是构建在马尔可夫性质之上的：</p>
+<ul>
+<li>当一个随机过程在给定现在状态及所有过去状态情况下，其未来状态的条件概率分布仅依赖于当前状态</li>
+<li>在给定现在状态时，随机过程与过去状态（历史）是条件独立的</li>
+<li>状态包含了关于历史的所有信息</li>
+<li>一旦知道当前状态，过去的历史可以完全抛弃</li>
+<li>当前状态足够用来预计未来</li>
+<li>$P(S_{t+1}|S_{t})=P(S_{t+1}|S_1,..,S_t)$  </li>
+</ul>
+<p>在MDP中，由于加入了行为的影响，那么系统的下一个状态将由当前状态和行为共同决定：$P(S_{t+1}|S_{t},A_{t})$，用一张图来表示更为清晰：<br><img src="img/MDP.jpg" alt="MDP">  </p>
+<p>不知你看完这段介绍有何感想，我是觉得，用它来做量化交易没准可行，但是有几个问题值得讨论：</p>
+<ol>
+<li>市场（环境）的状态不是完整可知的，因此交易问题应该属于POMDP(Partially Observed MDP)？Agent需要通过观察来推测自己所在的状态？</li>
+<li>建模的时候难以模拟出交易决策影响市场状态的过程，那么市场的状态就变成了只能由市场本身决定，Agent是否从学习策略变成了学习Environment本身？</li>
+<li>如何构建State？使用什么数据？</li>
+<li>如何正确定义Agent的行为？只能交易单个标的还是能够管理投资组合？</li>
+<li>如何定义Reward？相对收益？Sharpe Ratio?   </li>
+</ol>
+<p>显然，想要正确使用强化学习进行量化交易，需要解决不少从宏观到微观的问题。但是问题归问题，解决问题的一个好方法就是从实践中了解问题本身并解决它。于是乎，大量的收集Paper是一切的开始。这里我们来分析两篇比较典型的Paper：</p>
+<ul>
+<li><a href="http://dl.acm.org/citation.cfm?id=340534.340841" target="_blank" rel="noopener">Reinforcement Learning for Trading</a></li>
+<li><a href="http://ieeexplore.ieee.org/document/7407387/" target="_blank" rel="noopener">Deep Direct Reinforcement Learning for Financial Signal Representation and Trading</a>  </li>
+</ul>
+<p>第一篇是(Moody et al.)发布于1998年的文章，目前能够找到的许多用RL做trading的文章都会引用这篇。这篇文章以及之后的许多文章事实上思路都比较独特，他们并没有完全的按照RL的框架去建模，或者并没有使用经典的RL算法如Q-Learning等，而是将问题转化为更符合交易这一场景的问题。两篇文章中作者都使用了Recurrent的网络结构，通过RNN直接构建策略网络输出action，$a_t=\pi_\theta(S_t,h_{t-1})$。获得action后，作者定义了回报函数$r_t=a_td_t-c|a_t-a_{t-1}|$ where $a_t$是$t$时刻的action，$d_t$是$t$时刻的相对或绝对收益，$c$是一个交易费用常数，后面的一项代表了因调仓产生的交易费用，用于惩罚Agent的频繁调仓行为。最终，作者定义目标函数$U_T=\sum_t{r_t}$，通过优化算法优化参数$\theta$从而最大化全局收益。两篇文章都是直接对目标函数$U_T=\sum_t{r_t}$进行优化，目标函数对参数$\theta$的梯度这样表示：<br>$$\frac{\partial{U_T}}{\partial{\theta}}=\sum_t{\frac{\partial{U_T}}{\partial{r_t}}} \left{ \frac{\partial{r_t}}{\partial{a_t}} \frac{\partial{a_t}}{\partial{\theta}} + \frac{\partial{r_t}}{\partial{a_{t-1}}} \frac{\partial{a_{t-1}}}{\partial{\theta}} \right}$$<br>其中$r$直接对action求的偏导，那么我猜测在设计网络的时候是否也就意味着Agent是可以直接自己计算Reward的而非需要Environment提供？（事实或许也确实如此，毕竟我们知道了价格的变化就可以直接由Agent自己计算Reward）。那么如此一来，或许直接用Reward去优化Action是一个符合直觉的做法。 </p>
+<p>如果不使用这种方法，我们就必须假设只能由环境给出reward，然后通过标准的RL算法如DQN,PG,DPG等优化$Q_w$或$\pi_\theta$函数的参数。那么到底哪种方式更好？目前我的实验还没有给出明确的结果，对于投资组合的管理，第一种方法似乎更好，因为对于连续的高维的action space，用于表示portfolio中的资产权重非常方便。第二种算法的优势在于，可以通过探索环境来学习策略，学到的策略或许会比第一种直接优化好？这个我会继续通过实验进行研究。</p>
+<h2 id="开火炼丹"><a href="#开火炼丹" class="headerlink" title="开火炼丹"></a>开火炼丹</h2><p>对于以上提到的5个问题，前两个问题比较宏观，各有各的见解，先不做过多研究，后面的3个问题，其实在阅读previous work的过程中已经基本有了答案。那么获得了前人经验之后，自己也就想尝试着炼一锅看看效果了。  </p>
+<p>首先，本篇文章的题目是用强化学习做数字货币的交易，但是在详细说明数字货币交易之前，我想先分享一下使用Direct RL做美股交易的实验的一些经验。实际上在开始研究数字货币交易之前，我对上一段提到的第二篇文章进行了深入的扩展，尤其是在策略网络部分加入了更多的创新，同时也将新闻数据作为feature引入。经过一系列的实验之后，我发现使用Direct RL做量化交易确实是管用的，放出一张实验结果以供参考：<br><img src="img/result.png" alt="result"><br>(回测收益率，双向多空操作和单向操作结果)<br><img src="img/action_hedge.png" alt="action_hedge"><br>(双向操作action)<br><img src="img/action_single.png" alt="action_single"><br>(单向操作action)</p>
+<p>实验是在zipline回测框架下完成的，一共大概70多支股票，来自S&amp;P500 Components， Agent输出的是仓位权重，由Zipline通过权重调整仓位。从图中可以看出，双向多空操作的Agent在2008年经济危机来临时成功通过做空市场获利，但是之后表现一般，单向操作的Agent没能避开金融危机，但是之后的表现似乎不错。然而，无论回测再怎么精彩，没接过实盘的算法终究无法证明自己的价值。然而真的用这套算法去接实盘是不可能的，首先美股开户门槛高，而且又是真金白银的去测试模型，这是不可接受的。  </p>
+<p>所以想要进行实盘交易，就必须要选择合适的金融工具，选择合适的交易所。如此看来，数字货币必然成为最优解。数字货币交易的进入门槛低，交易所24小时运行，没有涨跌幅限制，不限交易次数，波动性大，同时还能进行杠杆交易，这些都是测试强化学习交易策略的天然优势。之后需要确定的事就是选择一个手续费较低，API质量高，数据获取方便的交易所。经过一番调研之后，我决定暂时使用<a href="https://www.huobipro.com" target="_blank" rel="noopener">火币网</a>作为实验平台。火币的API有专门的<a href="https://github.com/huobiapi/REST-API-demos" target="_blank" rel="noopener">Python封装</a>，稍加修改就可以配合执行Agent输出的Action。但是火币提供的数据并不是太多，k_line API最多只能拉取2000条数据。对于RL来说，这个数据量还是太小，所以目前的办法就是，训练时采用多个标的，在batch维度上叠加，构造3维Tensor进行训练，能够在一定程度上弥补数据量的不足。目前能够从火币获得的数据不仅有OHLCV，还包括Order Book的信息，如果能把这部分信息利用上，那么通过RL做高频交易也将成为可能，不过初步计划还没有考虑使用。  </p>
+<p>另外一个问题就是，之前设计的深度扩展版Direct RL模型太过复杂，所以需要推倒重建。于是我决定尝试采用标准RL算法，例如DQN,PG,DPG等。在实验中我发现，PG以及扩展后的RecurrentPG效果最好，但是这类算法一般输出都是离散的action，难以有效表示投资组合中的目标资产权重，所以初步的决定是，仓位的比例可以由另外一个模型来控制（Maybe: Markowitz Portfolio Theory），Agent只负责决定买入和卖出。实验的结果如下，作为参考  </p>
+<p><img src="img/PG.png" alt="PG"><br>(Policy Gradient)  </p>
+<p><img src="img/RPG.png" alt="RPG"><br>(Recurrent Policy Gradient)  </p>
+<p>经过多次实验的结果基本上能够确定，Recurrent Policy Gradient会比Policy Gradient稍好，但是训练速度是其最大缺陷。  </p>
+<p>现在想法，模型，数据都已经一应俱全，只剩下编写一个稳定的交易程序了，由于程序还在编写，在这里我就先不详细展开这部分内容了。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>总体来说，我认为使用RL+DL做量化交易是可行的，尤其对于懒的掉渣的程序员来说，能把上面的图压缩成 数据-&gt;黑箱-&gt;订单 这种模型绝对是实现懒惰的最大动力。当然，玩笑归玩笑，无论是通过传统方法编写的硬性交易策略还是通过可学习算法编写的自适应交易策略，最终目的都是为了挖掘市场中的潜在收益以及规避风险。那么在这个瞬息万变的市场上，发展高科技武器几乎是必然选择，将人工智能应用于金融市场的博弈中自始至终都是一个十分火热的研究方向。之后的文章我也会继续公开我的研究进展，如果你碰巧读到了这篇文章并对这个方向感兴趣，欢迎一起交流探讨。  </p>
+<p>两个相关的代码库：<br><a href="https://github.com/yuriak/RLQuant" target="_blank" rel="noopener">RLQuant</a><br><a href="https://github.com/yuriak/DLQuant" target="_blank" rel="noopener">DLQuant</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/" data-id="cjj9qz3i000004gt5l6ttwhz1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quantitative-Trading/">Quantitative Trading</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reinforcement-Learning/">Reinforcement Learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Quant/">Quant</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quantitative-Trading/">Quantitative Trading</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reinforcement-Learning/">Reinforcement Learning</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/Quantitative-Trading/" style="font-size: 10px;">Quantitative Trading</a> <a href="/tags/Reinforcement-Learning/" style="font-size: 10px;">Reinforcement Learning</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/06/基于强化学习构建数字货币量化交易策略/">基于强化学习构建数字货币量化交易策略</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Yuri Antonovsky<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
