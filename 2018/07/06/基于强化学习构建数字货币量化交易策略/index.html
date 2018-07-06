@@ -17,12 +17,12 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://joinquant-image.b0.upaiyun.com/74787c100b599ad026e9c96265cbc3cb">
 <meta property="og:image" content="https://deeplearning4j.org/img/simple_RL_schema.png">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/MDP.jpg">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/result.png">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/action_hedge.png">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/action_single.png">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/PG.png">
-<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/img/RPG.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/MDP.jpg">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/result.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/action_hedge.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/action_single.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/PG.png">
+<meta property="og:image" content="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/RPG.png">
 <meta property="og:updated_time" content="2018-07-06T08:57:58.247Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于强化学习构建数字货币量化交易策略">
@@ -131,7 +131,7 @@
 <li>当前状态足够用来预计未来</li>
 <li>$P(S_{t+1}|S_{t})=P(S_{t+1}|S_1,..,S_t)$  </li>
 </ul>
-<p>在MDP中，由于加入了行为的影响，那么系统的下一个状态将由当前状态和行为共同决定：$P(S_{t+1}|S_{t},A_{t})$，用一张图来表示更为清晰：<br><img src="img/MDP.jpg" alt="MDP">  </p>
+<p>在MDP中，由于加入了行为的影响，那么系统的下一个状态将由当前状态和行为共同决定：$P(S_{t+1}|S_{t},A_{t})$，用一张图来表示更为清晰：<br><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/MDP.jpg" alt="MDP">  </p>
 <p>不知你看完这段介绍有何感想，我是觉得，用它来做量化交易没准可行，但是有几个问题值得讨论：</p>
 <ol>
 <li>市场（环境）的状态不是完整可知的，因此交易问题应该属于POMDP(Partially Observed MDP)？Agent需要通过观察来推测自己所在的状态？</li>
@@ -148,12 +148,12 @@
 <p>第一篇是(Moody et al.)发布于1998年的文章，目前能够找到的许多用RL做trading的文章都会引用这篇。这篇文章以及之后的许多文章事实上思路都比较独特，他们并没有完全的按照RL的框架去建模，或者并没有使用经典的RL算法如Q-Learning等，而是将问题转化为更符合交易这一场景的问题。两篇文章中作者都使用了Recurrent的网络结构，通过RNN直接构建策略网络输出action，$a_t=\pi_\theta(S_t,h_{t-1})$。获得action后，作者定义了回报函数$r_t=a_td_t-c|a_t-a_{t-1}|$ where $a_t$是$t$时刻的action，$d_t$是$t$时刻的相对或绝对收益，$c$是一个交易费用常数，后面的一项代表了因调仓产生的交易费用，用于惩罚Agent的频繁调仓行为。最终，作者定义目标函数$U_T=\sum_t{r_t}$，通过优化算法优化参数$\theta$从而最大化全局收益。两篇文章都是直接对目标函数$U_T=\sum_t{r_t}$进行优化，目标函数对参数$\theta$的梯度这样表示：<br>$$\frac{\partial{U_T}}{\partial{\theta}}=\sum_t{\frac{\partial{U_T}}{\partial{r_t}}} \left{ \frac{\partial{r_t}}{\partial{a_t}} \frac{\partial{a_t}}{\partial{\theta}} + \frac{\partial{r_t}}{\partial{a_{t-1}}} \frac{\partial{a_{t-1}}}{\partial{\theta}} \right}$$<br>其中$r$直接对action求的偏导，那么我猜测在设计网络的时候是否也就意味着Agent是可以直接自己计算Reward的而非需要Environment提供？（事实或许也确实如此，毕竟我们知道了价格的变化就可以直接由Agent自己计算Reward）。那么如此一来，或许直接用Reward去优化Action是一个符合直觉的做法。 </p>
 <p>如果不使用这种方法，我们就必须假设只能由环境给出reward，然后通过标准的RL算法如DQN,PG,DPG等优化$Q_w$或$\pi_\theta$函数的参数。那么到底哪种方式更好？目前我的实验还没有给出明确的结果，对于投资组合的管理，第一种方法似乎更好，因为对于连续的高维的action space，用于表示portfolio中的资产权重非常方便。第二种算法的优势在于，可以通过探索环境来学习策略，学到的策略或许会比第一种直接优化好？这个我会继续通过实验进行研究。</p>
 <h2 id="开火炼丹"><a href="#开火炼丹" class="headerlink" title="开火炼丹"></a>开火炼丹</h2><p>对于以上提到的5个问题，前两个问题比较宏观，各有各的见解，先不做过多研究，后面的3个问题，其实在阅读previous work的过程中已经基本有了答案。那么获得了前人经验之后，自己也就想尝试着炼一锅看看效果了。  </p>
-<p>首先，本篇文章的题目是用强化学习做数字货币的交易，但是在详细说明数字货币交易之前，我想先分享一下使用Direct RL做美股交易的实验的一些经验。实际上在开始研究数字货币交易之前，我对上一段提到的第二篇文章进行了深入的扩展，尤其是在策略网络部分加入了更多的创新，同时也将新闻数据作为feature引入。经过一系列的实验之后，我发现使用Direct RL做量化交易确实是管用的，放出一张实验结果以供参考：<br><img src="img/result.png" alt="result"><br>(回测收益率，双向多空操作和单向操作结果)<br><img src="img/action_hedge.png" alt="action_hedge"><br>(双向操作action)<br><img src="img/action_single.png" alt="action_single"><br>(单向操作action)</p>
+<p>首先，本篇文章的题目是用强化学习做数字货币的交易，但是在详细说明数字货币交易之前，我想先分享一下使用Direct RL做美股交易的实验的一些经验。实际上在开始研究数字货币交易之前，我对上一段提到的第二篇文章进行了深入的扩展，尤其是在策略网络部分加入了更多的创新，同时也将新闻数据作为feature引入。经过一系列的实验之后，我发现使用Direct RL做量化交易确实是管用的，放出一张实验结果以供参考：<br><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/result.png" alt="result"><br>(回测收益率，双向多空操作和单向操作结果)<br><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/action_hedge.png" alt="action_hedge"><br>(双向操作action)<br><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/action_single.png" alt="action_single"><br>(单向操作action)</p>
 <p>实验是在zipline回测框架下完成的，一共大概70多支股票，来自S&amp;P500 Components， Agent输出的是仓位权重，由Zipline通过权重调整仓位。从图中可以看出，双向多空操作的Agent在2008年经济危机来临时成功通过做空市场获利，但是之后表现一般，单向操作的Agent没能避开金融危机，但是之后的表现似乎不错。然而，无论回测再怎么精彩，没接过实盘的算法终究无法证明自己的价值。然而真的用这套算法去接实盘是不可能的，首先美股开户门槛高，而且又是真金白银的去测试模型，这是不可接受的。  </p>
 <p>所以想要进行实盘交易，就必须要选择合适的金融工具，选择合适的交易所。如此看来，数字货币必然成为最优解。数字货币交易的进入门槛低，交易所24小时运行，没有涨跌幅限制，不限交易次数，波动性大，同时还能进行杠杆交易，这些都是测试强化学习交易策略的天然优势。之后需要确定的事就是选择一个手续费较低，API质量高，数据获取方便的交易所。经过一番调研之后，我决定暂时使用<a href="https://www.huobipro.com" target="_blank" rel="noopener">火币网</a>作为实验平台。火币的API有专门的<a href="https://github.com/huobiapi/REST-API-demos" target="_blank" rel="noopener">Python封装</a>，稍加修改就可以配合执行Agent输出的Action。但是火币提供的数据并不是太多，k_line API最多只能拉取2000条数据。对于RL来说，这个数据量还是太小，所以目前的办法就是，训练时采用多个标的，在batch维度上叠加，构造3维Tensor进行训练，能够在一定程度上弥补数据量的不足。目前能够从火币获得的数据不仅有OHLCV，还包括Order Book的信息，如果能把这部分信息利用上，那么通过RL做高频交易也将成为可能，不过初步计划还没有考虑使用。  </p>
 <p>另外一个问题就是，之前设计的深度扩展版Direct RL模型太过复杂，所以需要推倒重建。于是我决定尝试采用标准RL算法，例如DQN,PG,DPG等。在实验中我发现，PG以及扩展后的RecurrentPG效果最好，但是这类算法一般输出都是离散的action，难以有效表示投资组合中的目标资产权重，所以初步的决定是，仓位的比例可以由另外一个模型来控制（Maybe: Markowitz Portfolio Theory），Agent只负责决定买入和卖出。实验的结果如下，作为参考  </p>
-<p><img src="img/PG.png" alt="PG"><br>(Policy Gradient)  </p>
-<p><img src="img/RPG.png" alt="RPG"><br>(Recurrent Policy Gradient)  </p>
+<p><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/PG.png" alt="PG"><br>(Policy Gradient)  </p>
+<p><img src="/2018/07/06/基于强化学习构建数字货币量化交易策略/RPG.png" alt="RPG"><br>(Recurrent Policy Gradient)  </p>
 <p>经过多次实验的结果基本上能够确定，Recurrent Policy Gradient会比Policy Gradient稍好，但是训练速度是其最大缺陷。  </p>
 <p>现在想法，模型，数据都已经一应俱全，只剩下编写一个稳定的交易程序了，由于程序还在编写，在这里我就先不详细展开这部分内容了。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>总体来说，我认为使用RL+DL做量化交易是可行的，尤其对于懒的掉渣的程序员来说，能把上面的图压缩成 数据-&gt;黑箱-&gt;订单 这种模型绝对是实现懒惰的最大动力。当然，玩笑归玩笑，无论是通过传统方法编写的硬性交易策略还是通过可学习算法编写的自适应交易策略，最终目的都是为了挖掘市场中的潜在收益以及规避风险。那么在这个瞬息万变的市场上，发展高科技武器几乎是必然选择，将人工智能应用于金融市场的博弈中自始至终都是一个十分火热的研究方向。之后的文章我也会继续公开我的研究进展，如果你碰巧读到了这篇文章并对这个方向感兴趣，欢迎一起交流探讨。  </p>
@@ -162,7 +162,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/" data-id="cjj9qz3i000004gt5l6ttwhz1" class="article-share-link">Share</a>
+      <a data-url="https://yuriak.github.io/2018/07/06/基于强化学习构建数字货币量化交易策略/" data-id="cjj9r9hew0000e0t5hepxrohg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quantitative-Trading/">Quantitative Trading</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reinforcement-Learning/">Reinforcement Learning</a></li></ul>
