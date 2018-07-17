@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Prelude上高中的时候，曾经看过一篇Valve开发Half-Life 2的回忆录，非常生动的记录了整个项目从想法产生到产品发布过程中遇到的种种挫折以及最后激动人心的时刻。作为一个软件开发者，在每次建立新的项目的时候，都有一种如同开始了一段崭新的旅程的感觉，那么如果能把开发过程中的点滴记录下来，在项目完成之后回头望去，将会是十分有趣的体验。   于是乎，在上一篇文章阐述了半天用RL搞量化交易的可">
+<meta name="keywords" content="Quantitative Trading,Reinforcement Learning,Deep Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RLCrypto开发笔记(0)">
+<meta property="og:url" content="https://kernelbooster.com/2018/07/17/RLCrypto开发笔记-0/index.html">
+<meta property="og:site_name" content="NULL">
+<meta property="og:description" content="Prelude上高中的时候，曾经看过一篇Valve开发Half-Life 2的回忆录，非常生动的记录了整个项目从想法产生到产品发布过程中遇到的种种挫折以及最后激动人心的时刻。作为一个软件开发者，在每次建立新的项目的时候，都有一种如同开始了一段崭新的旅程的感觉，那么如果能把开发过程中的点滴记录下来，在项目完成之后回头望去，将会是十分有趣的体验。   于是乎，在上一篇文章阐述了半天用RL搞量化交易的可">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kernelbooster.com/2018/07/17/RLCrypto开发笔记-0/distribution.png">
+<meta property="og:updated_time" content="2018-07-17T01:09:13.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RLCrypto开发笔记(0)">
+<meta name="twitter:description" content="Prelude上高中的时候，曾经看过一篇Valve开发Half-Life 2的回忆录，非常生动的记录了整个项目从想法产生到产品发布过程中遇到的种种挫折以及最后激动人心的时刻。作为一个软件开发者，在每次建立新的项目的时候，都有一种如同开始了一段崭新的旅程的感觉，那么如果能把开发过程中的点滴记录下来，在项目完成之后回头望去，将会是十分有趣的体验。   于是乎，在上一篇文章阐述了半天用RL搞量化交易的可">
+<meta name="twitter:image" content="https://kernelbooster.com/2018/07/17/RLCrypto开发笔记-0/distribution.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://kernelbooster.com/2018/07/17/RLCrypto开发笔记-0/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>RLCrypto开发笔记(0) | NULL</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NULL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kernelbooster.com/2018/07/17/RLCrypto开发笔记-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yuri Antonovsky">
+      <meta itemprop="description" content="不会开飞机的程序员不是好炼丹师">
+      <meta itemprop="image" content="/img/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NULL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RLCrypto开发笔记(0)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-07-17 11:53:01 / Modified: 09:09:13" itemprop="dateCreated datePublished" datetime="2018-07-17T11:53:01+08:00">2018-07-17</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Quant/" itemprop="url" rel="index"><span itemprop="name">Quant</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Prelude"><a href="#Prelude" class="headerlink" title="Prelude"></a>Prelude</h1><p>上高中的时候，曾经看过一篇Valve开发Half-Life 2的回忆录，非常生动的记录了整个项目从想法产生到产品发布过程中遇到的种种挫折以及最后激动人心的时刻。作为一个软件开发者，在每次建立新的项目的时候，都有一种如同开始了一段崭新的旅程的感觉，那么如果能把开发过程中的点滴记录下来，在项目完成之后回头望去，将会是十分有趣的体验。  </p>
+<p>于是乎，在上一篇文章阐述了半天用RL搞量化交易的可能性之后，我决定着手实践一下，<a href="https://github.com/yuriak/RLCrypto" target="_blank" rel="noopener">RLCrypto</a>就是我新开源的代码库，用于将RL真正的应用于实盘交易中，那么本系列文章也就是用来记录我在开发RLCrypto中遇到的问题，解决方案以及一些未能立即实现的想法的。 Alright, let’s rock’n roll!</p>
+<a id="more"></a>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>语文老师曾经苦口婆心的教给我们，写作文之前要先构思，要写提纲，要有个全文的骨架。那么开发软件系统同样如此，构思这一步骤甚至远比写作时的构思更重要，因为我们要写的东一西是一篇能运行的作文，如果架构有问题，可想而知会发生什么后果。所以，我们就先来考虑一下如何设计这个系统。  </p>
+<p>一切从最简单的开始。列出一些本质的问题，并回答他们：</p>
+<ol>
+<li>我们的系统是做什么用的</li>
+<li>系统使用的输入数据是什么</li>
+<li>系统的输出是什么</li>
+</ol>
+<p>对于第一个问题，我们已经很明确了，我们的系统是一个自动化交易程序，其中有一个自认为能打败市场的智能体(agent)，智能体管理着一个多种数字货币构成的投资组合，智能体从交易所获取到市场状态(state/data)，作出相应的交易决策/动作(action)，交易决策被转换为能够执行的交易指令/订单(orders)，由系统发出。用符号描述就是这样: exchange-&gt;(state/data)-&gt;agent-&gt;(action)-&gt;exchange</p>
+<p>对于第二个问题，系统使用的数据是什么，目前我们能够方便获取到的只有OHLCV数据，那么我们就用它来作为输入数据，但是，当然要对数据进行处理，具体的处理过程之后细说。  </p>
+<p>对于第三个问题，系统的输出是什么，上一篇文章中我们提到过，我们想要构建一个端到端的解决方案，数据进，指令出，那么系统的输出当然也就是交易指令了，那么交易指令是什么形态的？不要着急，我们之后也会细讲。  </p>
+<p>回答完这几个问题之后，大脑中似乎已经有了一个基本框架，在明确这个框架没有大问题之后，我们就可以尝试着思考一些细节问题了。作为一个近年来一直跟数据打交道的人，我决定先从输入数据入手。</p>
+<h2 id="Input-Data"><a href="#Input-Data" class="headerlink" title="Input Data"></a>Input Data</h2><p>在上一段中我们提到了，我们将只使用OHLCV数据对Agent进行训练。在经过调研之后我发现，火币的接口能够获取到的k线数据最多只有2000条，用这么点数据训练Agent难道不会过拟合？我觉得肯定会，但是再构建一套迁移学习的解决方案短期之内实现又不太现实怎么办？那就先有啥用啥吧。  </p>
+<p>数据来源，数据长度确定了，下一步就来说说如何处理数据，使之能够更有效地被agent使用。首先，我们应该知道的常识是，神经网络的输入数据需要尽量服从正态分布，那么直接将OHLCV数据塞进去是很不明智的，所以我们需要对数据做预处理。最Intuitive的方法是做一阶差分，但是这样出来的结果仍然不能保证正态性，同时数据的方差也不易控制。那么更高级的方法是使用OHLCV数据计算一些指标，选择符合正太分布的指标作为feature。  </p>
+<p>但是选取什么样的指标合适，以及如何计算这些指标呢？这篇<a href="https://www.jianshu.com/p/ad9c80c7bf0a" target="_blank" rel="noopener">博客</a>以及<a href="https://github.com/mrjbq7/ta-lib" target="_blank" rel="noopener">ta-lib</a>库或许能给出答案。在经过一系列筛选之后，我选出了34个相对合格的feature，当然其中也包含了趋势特征，这样的特征会在之后做normalize的时候保证值域的正常。下面给出了生成feature的代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_tech_data_default</span><span class="params">(stock, open_name, close_name, high_name, low_name, volume_name=<span class="string">'vol'</span>)</span>:</span></span><br><span class="line">    open_price = stock[open_name].values</span><br><span class="line">    close_price = stock[close_name].values</span><br><span class="line">    low_price = stock[low_name].values</span><br><span class="line">    high_price = stock[high_name].values</span><br><span class="line">    volume = stock[volume_name].values</span><br><span class="line">    data = stock.copy()</span><br><span class="line">    data[<span class="string">'MOM'</span>] = talib.MOM(close_price)</span><br><span class="line">    data[<span class="string">'HT_DCPERIOD'</span>] = talib.HT_DCPERIOD(close_price)</span><br><span class="line">    data[<span class="string">'HT_DCPHASE'</span>] = talib.HT_DCPHASE(close_price)</span><br><span class="line">    data[<span class="string">'sine'</span>], data[<span class="string">'leadsine'</span>] = talib.HT_SINE(close_price)</span><br><span class="line">    data[<span class="string">'inphase'</span>], data[<span class="string">'quadrature'</span>] = talib.HT_PHASOR(close_price)</span><br><span class="line">    data[<span class="string">'ADXR'</span>] = talib.ADXR(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'APO'</span>] = talib.APO(close_price)</span><br><span class="line">    data[<span class="string">'AROON_UP'</span>], _ = talib.AROON(high_price, low_price)</span><br><span class="line">    data[<span class="string">'CCI'</span>] = talib.CCI(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'PLUS_DI'</span>] = talib.PLUS_DI(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'PPO'</span>] = talib.PPO(close_price)</span><br><span class="line">    data[<span class="string">'macd'</span>], data[<span class="string">'macd_sig'</span>], data[<span class="string">'macd_hist'</span>] = talib.MACD(close_price)</span><br><span class="line">    data[<span class="string">'CMO'</span>] = talib.CMO(close_price)</span><br><span class="line">    data[<span class="string">'ROCP'</span>] = talib.ROCP(close_price)</span><br><span class="line">    data[<span class="string">'fastk'</span>], data[<span class="string">'fastd'</span>] = talib.STOCHF(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'TRIX'</span>] = talib.TRIX(close_price)</span><br><span class="line">    data[<span class="string">'ULTOSC'</span>] = talib.ULTOSC(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'WILLR'</span>] = talib.WILLR(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'NATR'</span>] = talib.NATR(high_price, low_price, close_price)</span><br><span class="line">    data[<span class="string">'MFI'</span>] = talib.MFI(high_price, low_price, close_price, volume)</span><br><span class="line">    data[<span class="string">'RSI'</span>] = talib.RSI(close_price)</span><br><span class="line">    data[<span class="string">'AD'</span>] = talib.AD(high_price, low_price, close_price, volume)</span><br><span class="line">    data[<span class="string">'OBV'</span>] = talib.OBV(close_price, volume)</span><br><span class="line">    data[<span class="string">'EMA'</span>] = talib.EMA(close_price)</span><br><span class="line">    data[<span class="string">'SAREXT'</span>] = talib.SAREXT(high_price, low_price)</span><br><span class="line">    data[<span class="string">'TEMA'</span>] = talib.EMA(close_price)</span><br><span class="line">    data = data.drop([open_name, close_name, high_name, low_name, <span class="string">'amount'</span>, <span class="string">'count'</span>], axis=<span class="number">1</span>)</span><br><span class="line">    data = data.dropna().astype(np.float32)</span><br><span class="line">    <span class="keyword">return</span> data</span><br></pre></td></tr></table></figure></p>
+<p>那么获取火币数据的代码就十分简单了，直接对HuobiService中提供的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">```python</span><br><span class="line">def kline(asset, base_currency=&apos;btc&apos;, interval=&apos;60min&apos;, count=2000):</span><br><span class="line">    s = get_kline(&apos;&#123;0&#125;&#123;1&#125;&apos;.format(asset, base_currency), interval, count)</span><br><span class="line">    if s is None: return None</span><br><span class="line">    s = s[&apos;data&apos;]</span><br><span class="line">    s = pd.DataFrame(s)[::-1]</span><br><span class="line">    if s.shape[0] &lt; count:</span><br><span class="line">        return None</span><br><span class="line">    s.index = pd.DatetimeIndex(s[&apos;id&apos;].apply(lambda x: datetime.datetime.utcfromtimestamp(x) + datetime.timedelta(hours=8)))</span><br><span class="line">    s = s.drop(&apos;id&apos;, axis=1)</span><br><span class="line">    s[&apos;avg&apos;] = (np.mean(s[[&apos;open&apos;, &apos;high&apos;, &apos;low&apos;, &apos;close&apos;]], axis=1))</span><br><span class="line">    s[&apos;diff&apos;] = np.log(s[&apos;close&apos;] / s[&apos;close&apos;].shift(1)).fillna(0)</span><br><span class="line">    return s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def klines(assets, base_currency=&apos;btc&apos;, interval=&apos;60min&apos;, count=2000):</span><br><span class="line">    return lfilter(lambda x: x[1] is not None, lmap(lambda x: (x, kline(x, base_currency=base_currency, interval=interval, count=count)), assets))</span><br></pre></td></tr></table></figure></p>
+<p>有了这两段代码之后，就可以构造出我们的输入数据了。数据可视化的结果</p>
+<p><img src="distribution.png" alt="Features"></p>
+<p>OK,那么这篇文章我们就讲到输入数据的处理，现在要去赶工毕业论文了，下一篇将会讲Agent的构建</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/qrcode_kbooster_1.jpg" alt="Yuri Antonovsky wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎关注我的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Quantitative-Trading/" rel="tag"># Quantitative Trading</a>
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/06/基于强化学习构建数字货币量化交易策略/" rel="next" title="基于强化学习构建数字货币量化交易策略">
+                <i class="fa fa-chevron-left"></i> 基于强化学习构建数字货币量化交易策略
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/avatar.jpg"
+                alt="Yuri Antonovsky" />
+            
+              <p class="site-author-name" itemprop="name">Yuri Antonovsky</p>
+              <p class="site-description motion-element" itemprop="description">不会开飞机的程序员不是好炼丹师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yuriak" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Prelude"><span class="nav-number">1.</span> <span class="nav-text">Prelude</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">1.1.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Input-Data"><span class="nav-number">1.2.</span> <span class="nav-text">Input Data</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuri Antonovsky</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
