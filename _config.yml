@@ -1,0 +1,18 @@
+title: Minghan Wang
+description: Minghan Wang — PhD Candidate at Monash University, researching efficient language model reasoning and interactive AI.
+url: "https://yuriak.github.io"
+baseurl: ""
+markdown: kramdown
+collections:
+  news:
+    output: false
+  publications:
+    output: false
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - AGENTS.md
+  - dev_docs
+  - PanGPA.log

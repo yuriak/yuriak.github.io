@@ -1,0 +1,61 @@
+{
+  "name": "Minghan Wang",
+  "role": "PhD Candidate",
+  "affiliation": "Monash University",
+  "affiliation_url": "https://www.monash.edu/it",
+  "email_display": "minghan.wang [at] monash.edu",
+  "github_url": "https://github.com/yuriak",
+  "linkedin_url": "https://au.linkedin.com/in/minghan-wang-611663126/en",
+  "scholar_url": "https://scholar.google.com/citations?user=F6nm6awAAAAJ",
+  "supervisors": [
+    {
+      "title": "Professor",
+      "name": "Gholamreza (Reza) Haffari",
+      "url": "https://research.monash.edu/en/persons/reza-haffari/"
+    },
+    {
+      "title": "Associate Professor",
+      "name": "Ehsan Shareghi",
+      "url": "https://eehsan.github.io/"
+    },
+    {
+      "title": "Dr",
+      "name": "Thuy-Trang Vu",
+      "subtitle": "Lecturer",
+      "url": "https://research.monash.edu/en/persons/trang-vu/"
+    }
+  ],
+  "bio": "My interests span multilingual and multimodal AI, reasoning, and intelligent agents. What connects these areas is a broader ambition: to build intelligent, efficient, and interactive AI systems that work alongside people, help push the frontiers of scientific discovery, and make everyday life better. I enjoy turning ideas into working code—building, testing, and refining systems until they do something useful. It is an exciting time to work in AI, and I am eager to contribute to what comes next.",
+  "themes": [
+    "Multilingual & Multimodal AI",
+    "LLM Reasoning",
+    "Interactive Agents",
+    "Efficient AI"
+  ],
+  "news": [
+    {
+      "label": "Oct 2026",
+      "text": "Serving as an Industry Track Co-Chair for the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP 2026).",
+      "url": "https://2026.emnlp.org/calls/industry_track/",
+      "year": 2026
+    },
+    {
+      "label": "Aug 2026",
+      "text": "GTS accepted to the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP 2026).",
+      "url": "https://aclanthology.org/2026.emnlp-main.341/",
+      "year": 2026
+    },
+    {
+      "label": "June 2026",
+      "text": "Serving as a Teaching Assistant for FIT5217 at Monash University.",
+      "url": null,
+      "year": 2026
+    },
+    {
+      "label": "Apr 2026",
+      "text": "Towards Inference-time Scaling for Continuous Space Reasoning accepted to Findings of ACL 2026.",
+      "url": "https://aclanthology.org/2026.findings-acl.1338/",
+      "year": 2026
+    }
+  ]
+}

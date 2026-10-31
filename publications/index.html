@@ -1,0 +1,18 @@
+---
+layout: default
+title: Publications
+publications_page: true
+---
+<div class="publications-page">
+  <h1>Publications</h1>
+  {% assign years = site.data.publications | group_by: "year" | sort: "name" | reverse %}
+  {% for year in years %}
+  <section class="publications-year" aria-labelledby="year-{{ year.name }}">
+    <h2 id="year-{{ year.name }}">{{ year.name }}</h2>
+    <div class="publication-list">
+      {% assign papers = year.items | sort: "publication_order" %}
+      {% for paper in papers %}{% include home/publication.html paper=paper mode="full" %}{% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>

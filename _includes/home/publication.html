@@ -1,0 +1,36 @@
+{% assign item = include.paper %}
+{% assign display_mode = include.mode | default: "home" %}
+<article class="publication-item" id="paper-{{ item.id }}">
+  <div class="publication-thumbnail">
+    <img src="{{ item.thumbnail | relative_url }}" alt="{{ item.thumbnail_alt | escape }}" loading="lazy" decoding="async">
+  </div>
+  <div class="publication-details">
+    <h3 class="publication-title">{{ item.title | escape }}</h3>
+    <p class="publication-authors">{% for author in item.authors %}{% if author == "Minghan Wang" %}<strong>{{ author | escape }}</strong>{% else %}{{ author | escape }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</p>
+    <p class="publication-venue">{{ item.venue | escape }}</p>
+    {% if display_mode == "home" and item.tldr %}
+      <p class="publication-tldr"><span class="publication-label">TL;DR</span> {{ item.tldr | escape }}</p>
+    {% elsif display_mode == "full" and item.abstract %}
+      <p class="publication-abstract-full"><strong>Abstract.</strong> {{ item.abstract | escape }}</p>
+    {% endif %}
+    <div class="publication-actions">
+      <a class="publication-button publication-button--primary" href="{{ item.paper_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include home/icon.html name="file" %}<span>Paper</span>
+      </a>
+      {% if item.code_url %}
+        <a class="publication-button" href="{{ item.code_url | escape }}" target="_blank" rel="noopener noreferrer" {% if item.code_fallback %}title="Code repository forthcoming; opens GitHub profile" aria-label="Code repository forthcoming; opens GitHub profile"{% endif %}>
+          {% include home/icon.html name="code" %}<span>Code</span>
+        </a>
+      {% endif %}
+      {% if display_mode == "home" and item.abstract %}
+        <details class="publication-abstract-disclosure">
+          <summary class="publication-button publication-button--abstract">
+            {% include home/icon.html name="chevron" %}<span>Abstract</span>
+          </summary>
+          <p class="publication-abstract-text">{{ item.abstract | escape }}</p>
+        </details>
+      {% endif %}
+    </div>
+    {% if item.code_fallback %}<p class="publication-note">Code repository to be added; Code currently opens GitHub profile.</p>{% endif %}
+  </div>
+</article>

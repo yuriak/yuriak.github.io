@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: "Home" | escape }} · Minghan Wang</title>
+  <meta name="description" content="{{ page.description | default: 'Minghan Wang — PhD Candidate at Monash University.' | escape }}">
+  <meta name="author" content="Minghan Wang">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {% if page.home_page or page.publications_page or page.url == '/' %}
+  <link rel="stylesheet" href="{{ '/assets/css/publications.css' | relative_url }}">
+  {% endif %}
+  {% if page.home_page or page.url == '/' %}
+  <link rel="stylesheet" href="{{ '/assets/css/home.css' | relative_url }}">
+  {% endif %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-name" href="{{ '/' | relative_url }}">Minghan Wang</a>
+      <nav aria-label="Main navigation">
+        <ul>
+          {% assign nav_items = 'Home,Publications,Projects,Notes' | split: ',' %}
+          {% assign nav_paths = '/,/publications/,/projects/,/notes/' | split: ',' %}
+          {% for item in nav_items %}
+          <li><a href="{{ nav_paths[forloop.index0] | relative_url }}" {% if page.url == nav_paths[forloop.index0] %}aria-current="page"{% endif %}>{{ item }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main" tabindex="-1" class="site-main">{{ content }}</main>
+  <footer class="site-footer">Minghan Wang · Monash University</footer>
+</body>
+</html>

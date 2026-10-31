@@ -1,0 +1,109 @@
+wang-etal-2026-gts:
+  id: gts
+  thumbnail: /assets/publications/gts.png
+  thumbnail_alt: Overview figure from Gaussian Thought Sampler showing the sampling policy and training
+    procedure.
+  code_url: https://github.com/yuriak/GaussianThoughtSampler
+  selected_order: 1
+  tldr: A learnable, context-conditioned Gaussian sampler makes latent reasoning trajectories more useful
+    at inference time, improving pass@N without updating the reasoning backbone.
+  selected: true
+  publication_order: 1
+wang-etal-2026-towards-inference:
+  id: towards
+  thumbnail: /assets/publications/towards.png
+  thumbnail_alt: Pass-at-N evaluation curves from the LatentITS research project.
+  code_url: https://github.com/yuriak/LatentITS
+  selected_order: 2
+  tldr: Investigates how test-time sampling and verification transfer from textual chain-of-thought to
+    continuous latent reasoning, revealing the limitations of conventional rerankers.
+  selected: true
+  publication_order: 2
+wang-etal-2025-discrete:
+  id: discrete-minds
+  thumbnail: /assets/publications/discrete-minds.png
+  thumbnail_alt: Overview of experiments for measuring language model awareness of elapsed time.
+  code_url: https://github.com/yuriak/LLMTimePerception
+  selected_order: 3
+  tldr: Tests whether language models perceive elapsed time, not just reason about dates, through dialogue
+    judgments, urgency-aware answers and an interactive time-pressure task.
+  selected: true
+  publication_order: 3
+wang25x_interspeech:
+  id: speech-dialogue-factory
+  thumbnail: /assets/publications/speech-dialogue-factory.png
+  thumbnail_alt: SpeechDialogueFactory framework figure showing its structured multi-stage dialogue generation
+    pipeline.
+  code_url: https://github.com/yuriak/SpeechDialogueFactory
+  selected_order: 4
+  tldr: Generates natural and controllable synthetic spoken dialogues using structured scripts, speaker
+    voices and paralinguistic cues, with automated quality evaluation.
+  selected: true
+  publication_order: 4
+wang-etal-2025-conversational:
+  id: conversational-simulmt
+  thumbnail: /assets/publications/conversational-simulmt.png
+  thumbnail_alt: Conversational prompting diagram with interleaved source and target chunks from the LLM-SimulMT
+    project.
+  code_url: https://github.com/yuriak/LLM-SimulMT
+  selected_order: 5
+  tldr: Reframes simultaneous translation as a multi-turn conversation, reusing the LLM's KV cache to
+    reduce inference overhead without giving up translation quality.
+  selected: true
+  publication_order: 5
+wang-etal-2025-proverbs:
+  id: proverbs
+  thumbnail: /assets/publications/proverbs.png
+  thumbnail_alt: 'Figure 1 from Proverbs Run in Pairs: radar charts comparing literal and figurative proverb
+    translation using BLEU and COMET.'
+  code_url: https://github.com/yuriak/LLMProverbMT
+  selected_order: 7
+  tldr: Measures how well LLMs translate culturally grounded proverbs and exposes gaps in standard automatic
+    metrics for evaluating figurative language.
+  selected: true
+  publication_order: 6
+wang-etal-2024-exploring:
+  id: exploring
+  thumbnail: /assets/publications/exploring.png
+  thumbnail_alt: 'Figure 1: visual slide information improves recognition of scientific terminology in
+    multimodal ASR.'
+  code_url: https://github.com/yuriak/MS-ASR
+  selected: false
+  publication_order: 7
+wang-etal-2024-simultaneous:
+  id: simulmt-with-llms
+  thumbnail: /assets/publications/simulmt-with-llms.png
+  thumbnail_alt: Offline prompting and streaming translation illustration from the LLM-SimulMT project.
+  code_url: https://github.com/yuriak/LLM-SimulMT
+  selected_order: 6
+  tldr: Explores whether general-purpose LLMs can handle streaming translation with a relaxed longest-common-prefix
+    decoding strategy, balancing quality, latency and robustness.
+  selected: true
+  publication_order: 8
+wang-etal-2023-zephyr:
+  id: zephyr
+  thumbnail: /assets/publications/zephyr.png
+  thumbnail_alt: 'Figure 1: iterative offline Zephyr punctuation restoration using masked language model
+    predictions.'
+  code_url: https://github.com/yuriak
+  selected: false
+  publication_order: 9
+wang23ga_interspeech:
+  id: whislu
+  thumbnail: /assets/publications/whislu.png
+  thumbnail_alt: 'Figure 1: WhiSLU transforms speech into a structured sequence of transcript and semantic
+    predictions.'
+  code_url: https://github.com/yuriak
+  selected: false
+  publication_order: 10
+wang-etal-2022-diformer:
+  id: diformer
+  thumbnail: /assets/publications/diformer.png
+  thumbnail_alt: 'Figure 1 from Diformer: directional self-attention mask with relative positions and
+    direction-controlled inputs.'
+  code_url: https://github.com/yuriak/Diformer.git
+  selected_order: 8
+  tldr: Unifies autoregressive and non-autoregressive translation through direction-controlled decoding
+    while preserving the learning objectives of both paradigms.
+  selected: true
+  publication_order: 11

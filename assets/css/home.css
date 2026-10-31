@@ -1,0 +1,29 @@
+/* Home only. No global libraries or JS required. */
+.home-layout{display:grid;grid-template-columns:minmax(0,26fr) minmax(0,74fr);gap:3.25rem;align-items:start}
+.home-profile{position:sticky;top:2rem}
+.home-profile h1{font-size:1.9rem;line-height:1.2;letter-spacing:-.035em;margin:0 0 .6rem;font-weight:700}
+.home-role{font-size:.96rem;line-height:1.65;color:var(--muted)}
+.home-contact{list-style:none;padding:1rem 0 0;margin:1.45rem 0 0;border-top:1px solid var(--border)}
+.home-contact li{margin:0 0 .72rem}
+.home-contact a,.home-contact-static{display:flex;gap:.72rem;align-items:center;min-height:1.7rem;font-size:.93rem;line-height:1.4;overflow-wrap:anywhere}
+.home-contact a{color:var(--link);text-decoration:none}
+.home-contact a:hover{text-decoration:underline}
+.home-contact-static{color:var(--text)}
+.site-icon{display:inline-block;flex:0 0 auto;vertical-align:-.2em}
+.home-contact .site-icon{width:19px;height:19px}
+.home-content{min-width:0}
+.home-section+.home-section{border-top:1px solid var(--border);margin-top:2rem;padding-top:1.75rem}
+.home-section h2{font-size:1.45rem;line-height:1.35;margin:0 0 1.12rem;letter-spacing:-.02em;font-weight:700}
+.home-section>p{max-width:75ch}
+.research-themes{font-size:.95rem;line-height:1.8;color:#3d4851}
+.topic-separator{color:#82909b;padding:0 .12em}
+.home-news{margin:0;padding:0;list-style:none}
+.home-news li{display:grid;grid-template-columns:6rem minmax(0,1fr);gap:1.2rem;margin:0 0 1rem;line-height:1.6}
+.news-date{font-weight:650;color:#53606a;white-space:nowrap}
+.news-description{min-width:0}
+.news-source{display:inline-flex;vertical-align:-.17em;margin-left:.16rem}
+.news-source .site-icon{width:14px;height:14px}
+@media(max-width:940px){.home-layout{grid-template-columns:minmax(0,29fr) minmax(0,71fr);gap:2rem}}
+@media(max-width:700px){.home-layout{display:block}.home-profile{position:static;margin:0 0 2.1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border)}.home-contact{display:flex;flex-wrap:wrap;column-gap:1.3rem;row-gap:.25rem;border:0;padding:0;margin:.8rem 0 0}.home-contact li{margin:0}.home-contact li:first-child{flex-basis:100%}.home-news li{grid-template-columns:6rem minmax(0,1fr);gap:.8rem}}
+@media(max-width:460px){.home-profile h1{font-size:1.8rem}.home-section h2{font-size:1.36rem}}
+

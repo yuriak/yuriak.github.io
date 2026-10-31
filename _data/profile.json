@@ -1,0 +1,22 @@
+{
+  "name": "Minghan Wang",
+  "role": "PhD Candidate",
+  "affiliation": "Monash University",
+  "affiliation_url": "https://www.monash.edu/",
+  "email": "wangmh1994@gmail.com",
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/yuriak"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://au.linkedin.com/in/minghan-wang-611663126/en"
+    }
+  ],
+  "bio": [
+    "I am a PhD candidate in Computer Science at Monash University, supervised by Gholamreza Haffari, Ehsan Shareghi, and Thuy-Trang Vu. My research focuses on intelligent, efficient, and interactive AI systems, with an emphasis on language model reasoning and time-sensitive applications.",
+    "I study how language models can reason efficiently in continuous spaces, perceive the passage of time, and interact under real-time constraints. My broader interests include multimodal and multilingual generation, speech translation, and real-time agents.",
+    "Before my PhD, I worked on machine translation and speech technologies at Huawei. I received my Master of Science in Computer Science from the University of Melbourne."
+  ]
+}
